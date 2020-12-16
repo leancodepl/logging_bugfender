@@ -1,4 +1,4 @@
-name: logging_bugfender test
+name: test
 
 on:
   push:
