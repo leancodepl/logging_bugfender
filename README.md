@@ -3,9 +3,11 @@
 [![logging_bugfender pub.dev badge][pub-badge]][pub-badge-link]
 [![][build-badge]][build-badge-link]
 
-A library helping integrate Bugfender with the `logging` package.
+A library helping integrate Bugfender with the [logging] package.
 
 ## Usage
+
+#### Setup
 
 ```dart
 final loggingListener = LoggingBugfenderListener('my-very-secret-app-key');
@@ -24,7 +26,28 @@ loggingListener.setCustomData(logUsernameKey, '<some username>');
 loggingListener.removeCustomData(logUsernameKey);
 ```
 
+#### Using the logger
+
+```dart
+class FooBarCubit {
+    final _log = Logger('foo_bar_cubit');
+
+    // (...)
+
+    void doSomething() {
+        try {
+            // (...)
+            _log.info('Successfuly did something');
+        } catch (e) {
+            _log.severe('Failed doing something: $e');
+        }
+    }
+}
+```
+
 [pub-badge]: https://img.shields.io/pub/v/logging_bugfender
 [pub-badge-link]: https://pub.dev/packages/logging_bugfender
 [build-badge]: https://img.shields.io/github/workflow/status/leancodepl/logging_bugfender/test
 [build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions?query=workflow%3A%22test%22
+
+[logging]: https://pub.dev/packages/logging
