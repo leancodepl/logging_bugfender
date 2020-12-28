@@ -45,14 +45,14 @@ class LoggingBugfenderListener {
   /// unrelevant records.
   LoggingBugfenderListener(
     String appKey, {
-    Uri apiUri,
-    Uri baseUri,
-    int maximumLocalStorageSize,
+    Uri? apiUri,
+    Uri? baseUri,
+    int? maximumLocalStorageSize,
     bool printToConsole = true,
     bool enableUIEventLogging = true,
     bool enableCrashReporting = true,
     bool enableAndroidLogcatLogging = true,
-  }) : assert(appKey != null) {
+  }) {
     FlutterBugfender.init(
       appKey,
       apiUri: apiUri,
