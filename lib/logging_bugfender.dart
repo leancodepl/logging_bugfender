@@ -67,9 +67,6 @@ class LoggingBugfenderListener {
 
   /// Registers a [Logger] listener to the Bugfender.
   void listen(Logger logger) {
-    String _mapRecord(LogRecord record) =>
-        '[${record.level.name}] ${record.loggerName}: ${record.message}';
-
     logger.onRecord.listen((record) {
       if (record.level >= Level.SEVERE) {
         FlutterBugfender.fatal(_mapRecord(record));
@@ -81,6 +78,14 @@ class LoggingBugfenderListener {
         FlutterBugfender.trace(_mapRecord(record));
       }
     });
+  }
+
+  String _mapRecord(LogRecord record) {
+    var log = '[${record.level.name}] ${record.loggerName}: ${record.message}';
+    if (record.error != null) log += '\n${record.error}';
+    if (record.stackTrace != null) log += '\n${record.stackTrace}';
+
+    return log;
   }
 
   /// Sets the custom data with a specified `key` for Bugfender on this device.
