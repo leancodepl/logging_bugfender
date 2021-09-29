@@ -3,7 +3,7 @@ name: test
 on:
   push:
     branches: [master]
-    ignore-tags: ['v*']
+    tags-ignore: ['v*']
   pull_request:
     branches: [master]
 
@@ -17,10 +17,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-            - version: '2.0.x'
-            - channel: stable
-            - channel: beta
-            - channel: dev
+          - version: '2.0.x'
+          - channel: stable
+          - channel: beta
+          - channel: dev
 
     steps:
       - name: Checkout

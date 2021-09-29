@@ -1,3 +1,7 @@
+# 2.0.0+1
+
+- Depend on `flutter_bugfender` 2.0.1
+
 # 2.0.0
 
 - Bump minimum SDK version to 2.12.
