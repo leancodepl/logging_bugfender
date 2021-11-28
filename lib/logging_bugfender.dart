@@ -18,7 +18,7 @@ library logging_bugfender;
 import 'package:flutter_bugfender/flutter_bugfender.dart';
 import 'package:logging/logging.dart';
 
-/// A [Logger] listener that sends the records to the Bugfender.
+/// A [Logger] listener that sends the records to Bugfender.
 class LoggingBugfenderListener {
   /// Creates a [LoggingBugfenderListener]. You probably want to call [listen]
   /// just after creating it.
@@ -82,8 +82,12 @@ class LoggingBugfenderListener {
 
   String _mapRecord(LogRecord record) {
     var log = '[${record.level.name}] ${record.loggerName}: ${record.message}';
-    if (record.error != null) log += '\n${record.error}';
-    if (record.stackTrace != null) log += '\n${record.stackTrace}';
+    if (record.error != null) {
+      log += '\n${record.error}';
+    }
+    if (record.stackTrace != null) {
+      log += '\n${record.stackTrace}';
+    }
 
     return log;
   }
@@ -96,8 +100,8 @@ class LoggingBugfenderListener {
       return FlutterBugfender.setDeviceBool(key, value);
     } else if (value is double) {
       return FlutterBugfender.setDeviceFloat(key, value);
-    } else if (value is int) {
-      return FlutterBugfender.setDeviceInt(key, value);
+    } else if (value is num) {
+      return FlutterBugfender.setDeviceInt(key, value.toInt());
     } else {
       return FlutterBugfender.setDeviceString(key, value.toString());
     }
