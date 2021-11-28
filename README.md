@@ -30,16 +30,16 @@ loggingListener.removeCustomData(logUsernameKey);
 
 ```dart
 class FooBarCubit {
-    final _log = Logger('foo_bar_cubit');
+    final _logger = Logger('FooBarCubit');
 
     // (...)
 
     void doSomething() {
         try {
             // (...)
-            _log.info('Successfuly did something');
-        } catch (e) {
-            _log.severe('Failed doing something: $e');
+            _logger.info('Successfuly did something');
+        } catch (err, st) {
+            _logger.severe('Failed doing something', err, st);
         }
     }
 }
@@ -49,5 +49,4 @@ class FooBarCubit {
 [pub-badge-link]: https://pub.dev/packages/logging_bugfender
 [build-badge]: https://img.shields.io/github/workflow/status/leancodepl/logging_bugfender/test
 [build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions?query=workflow%3A%22test%22
-
 [logging]: https://pub.dev/packages/logging
