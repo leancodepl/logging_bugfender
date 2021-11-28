@@ -15,6 +15,8 @@
 /// A library integrating Bugfender with the `logging` package.
 library logging_bugfender;
 
+import 'dart:async';
+
 import 'package:flutter_bugfender/flutter_bugfender.dart';
 import 'package:logging/logging.dart';
 
@@ -66,8 +68,8 @@ class LoggingBugfenderListener {
   }
 
   /// Registers a [Logger] listener to the Bugfender.
-  void listen(Logger logger) {
-    logger.onRecord.listen((record) {
+  StreamSubscription<LogRecord> listen(Logger logger) {
+    return logger.onRecord.listen((record) {
       if (record.level >= Level.SEVERE) {
         FlutterBugfender.fatal(_mapRecord(record));
       } else if (record.level >= Level.WARNING) {
