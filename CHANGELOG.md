@@ -1,3 +1,9 @@
+# 2.1.0
+
+- `LoggingBugfenderListener.listen()` now returns a
+  `StreamSubscription<LogRecord>` instead of `void`
+- Update README.
+
 # 2.0.0+1
 
 - Depend on `flutter_bugfender` 2.0.1
