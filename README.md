@@ -7,16 +7,38 @@ A library helping integrate Bugfender with the [logging] package.
 
 ## Usage
 
-#### Setup
+### Setup
 
 ```dart
 final loggingListener = LoggingBugfenderListener('my-very-secret-app-key');
 
-// You probably want it to be INFO on production
-Logger.root.level = Level.ALL;
-// Listen on root logger
-loggingListener.listen(Logger.root);
+void main() {
+    setupLogger(true);
+    // ...
+    runApp(MyApp());
+}
 
+void setupLogger(bool debugMode) {
+  if (debugMode) {
+    // During debugging, you'll usually want to log everything
+    Logger.root.level = Level.ALL;
+    LoggingBugfenderListener(
+      config.bugfenderKey,
+      consolePrintStrategy: const PlainTextPrintStrategy(),
+    ).listen(Logger.root);
+  } else {
+    // On production, you probably want to log only INFO and above
+    Logger.root.level = Level.INFO;
+    LoggingBugfenderListener(config.bugfenderKey).listen(Logger.root);
+  }
+}
+```
+
+### Custom data
+
+You can also add and remove custom data.
+
+```dart
 const logUsernameKey = 'username';
 
 // After the user signs in
@@ -26,7 +48,7 @@ loggingListener.setCustomData(logUsernameKey, '<some username>');
 loggingListener.removeCustomData(logUsernameKey);
 ```
 
-#### Using the logger
+### In a cubit
 
 ```dart
 class FooBarCubit {

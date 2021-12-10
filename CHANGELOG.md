@@ -1,3 +1,12 @@
+# 3.0.0
+
+- Package rework. Now it comes with an opinionated (but configurable) logger
+  setup.
+- Add `PrintStrategy` classes to allow more granular control over
+  `LoggingBugfenderListener`s behavior.
+- **Breaking**: remove `printToConsole` from `LoggingBugfenderListener`'s
+  constructor.
+
 # 2.1.0
 
 - `LoggingBugfenderListener.listen()` now returns a
