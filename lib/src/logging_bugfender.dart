@@ -43,7 +43,7 @@ class LoggingBugfenderListener {
     int? maximumLocalStorageSize,
     @Deprecated('Use printStrategy instead') bool printToConsole = true,
     this.consolePrintStrategy = const NeverPrintStrategy(),
-    this.sendToBugfender = true,
+    this.bugfenderPrintStrategy = const PlainTextPrintStrategy(),
     bool enableUIEventLogging = true,
     bool enableCrashReporting = true,
     bool enableAndroidLogcatLogging = true,
@@ -60,27 +60,36 @@ class LoggingBugfenderListener {
     );
   }
 
-  /// Defines if and how logs should be printed to the console.
+  /// Defines if and how logs should created and printed to the console.
   final PrintStrategy consolePrintStrategy;
 
-  final bool sendToBugfender;
+  /// Defines if and how logs should be created and sent to Bugfender.
+  ///
+  /// Using [ColoredTextPrintStrategy] for this might have unexpected results
+  /// and is discouraged.
+  final PrintStrategy bugfenderPrintStrategy;
 
   /// Registers a [Logger] listener to the Bugfender.
   /// Starts listening to logs emitted by [logger]
   StreamSubscription<LogRecord> listen(Logger logger) {
     return logger.onRecord.listen((record) {
-      if (consolePrintStrategy is NeverPrintStrategy && !sendToBugfender) {
+      if (consolePrintStrategy is NeverPrintStrategy &&
+          bugfenderPrintStrategy is NeverPrintStrategy) {
         return;
       }
 
-      final log = _createLog(record);
-
       if (consolePrintStrategy is PlainTextPrintStrategy) {
+        final log = _createLog(record);
         // ignore: avoid_print
+        print(log);
+      } else if (consolePrintStrategy is ColoredTextPrintStrategy) {
+        final log = _createLog(record);
+        // TODO: make log colorful
         print(log);
       }
 
-      if (sendToBugfender) {
+      if (bugfenderPrintStrategy is! NeverPrintStrategy) {
+        final log = _createLog(record);
         if (record.level >= Level.SEVERE) {
           FlutterBugfender.fatal(log);
         } else if (record.level >= Level.WARNING) {
