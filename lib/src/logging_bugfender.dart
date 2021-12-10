@@ -20,7 +20,7 @@ class LoggingBugfenderListener {
   /// The `consolePrintStrategy` decides if and how logs are printed to the
   /// console.
   ///
-  /// The 'bugfenderPrintStrategy` decides if and how logs are sent to
+  /// The `bugfenderPrintStrategy` decides if and how logs are sent to
   /// Bugfender.
   ///
   /// The `sendToBugfender` decides whether to send logs to bugfender. If it is
