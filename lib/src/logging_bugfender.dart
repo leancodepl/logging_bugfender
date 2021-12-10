@@ -40,8 +40,8 @@ class LoggingBugfenderListener {
     Uri? apiUri,
     Uri? baseUri,
     int? maximumLocalStorageSize,
-    this.consolePrintStrategy = const NeverPrintStrategy(),
-    this.bugfenderPrintStrategy = const PlainTextPrintStrategy(),
+    this.consolePrintStrategy = PrintStrategy.never,
+    this.bugfenderPrintStrategy = PrintStrategy.plainText,
     bool enableUIEventLogging = true,
     bool enableCrashReporting = true,
     bool enableAndroidLogcatLogging = true,
@@ -70,23 +70,24 @@ class LoggingBugfenderListener {
   /// Starts listening to logs emitted by [logger].
   StreamSubscription<LogRecord> listen(Logger logger) {
     return logger.onRecord.listen((record) {
-      if (consolePrintStrategy is NeverPrintStrategy &&
-          bugfenderPrintStrategy is NeverPrintStrategy) {
+      if (consolePrintStrategy == PrintStrategy.never &&
+          bugfenderPrintStrategy == PrintStrategy.never) {
         return;
       }
 
-      if (consolePrintStrategy is PlainTextPrintStrategy) {
+      if (consolePrintStrategy == PrintStrategy.plainText) {
         final log = _createLog(record);
         // ignore: avoid_print
         print(log);
-      } else if (consolePrintStrategy is ColoredTextPrintStrategy) {
+      } else if (consolePrintStrategy ==
+          PrintStrategy.coloredText) {
         final log = _createLog(record);
         // TODO: make log colorful
         // ignore: avoid_print
         print(log);
       }
 
-      if (bugfenderPrintStrategy is! NeverPrintStrategy) {
+      if (bugfenderPrintStrategy != PrintStrategy.never) {
         final log = _createLog(record);
         if (record.level >= Level.SEVERE) {
           FlutterBugfender.fatal(log);
