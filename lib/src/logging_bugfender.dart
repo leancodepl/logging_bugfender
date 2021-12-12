@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bugfender/flutter_bugfender.dart';
 import 'package:logging/logging.dart';
-import 'package:logging_bugfender/src/print_strategies.dart';
+import 'package:logging_bugfender/src/print_strategy.dart';
 
 /// A [Logger] listener that sends the records to Bugfender.
 class LoggingBugfenderListener {
@@ -69,57 +69,26 @@ class LoggingBugfenderListener {
 
   /// Starts listening to logs emitted by [logger].
   StreamSubscription<LogRecord> listen(Logger logger) {
-    return logger.onRecord.listen((record) {
-      if (consolePrintStrategy is NeverPrintStrategy &&
-          bugfenderPrintStrategy is NeverPrintStrategy) {
-        return;
+    return logger.onRecord.listen((logRecord) {
+      final consoleLog = consolePrintStrategy.print(logRecord);
+      if (consoleLog != null) {
+        // ignore: avoid_print
+        print(consoleLog);
       }
 
-      if (consolePrintStrategy is PlainTextPrintStrategy) {
-        final log = _createLog(record);
-        // ignore: avoid_print
-        print(log);
-      } else if (consolePrintStrategy is ColoredTextPrintStrategy) {
-        final log = _createLog(record);
-        // TODO: make log colorful
-        // ignore: avoid_print
-        print(log);
-      }
-
-      if (bugfenderPrintStrategy is! NeverPrintStrategy) {
-        final log = _createLog(record);
-        if (record.level >= Level.SEVERE) {
-          FlutterBugfender.fatal(log);
-        } else if (record.level >= Level.WARNING) {
-          FlutterBugfender.warn(log);
-        } else if (record.level >= Level.CONFIG) {
-          FlutterBugfender.info(log);
+      final bugfenderLog = bugfenderPrintStrategy.print(logRecord);
+      if (bugfenderLog != null) {
+        if (logRecord.level >= Level.SEVERE) {
+          FlutterBugfender.fatal(bugfenderLog);
+        } else if (logRecord.level >= Level.WARNING) {
+          FlutterBugfender.warn(bugfenderLog);
+        } else if (logRecord.level >= Level.CONFIG) {
+          FlutterBugfender.info(bugfenderLog);
         } else {
-          FlutterBugfender.trace(log);
+          FlutterBugfender.trace(bugfenderLog);
         }
       }
     });
-  }
-
-  String _createLog(LogRecord record) {
-    final log = StringBuffer()
-      ..writeAll(
-        <String>[
-          '[${record.level.name}]',
-          if (record.loggerName.isNotEmpty) '${record.loggerName}:',
-          record.message,
-        ],
-        ' ',
-      );
-
-    if (record.error != null) {
-      log.write('\n${record.error}');
-    }
-    if (record.stackTrace != null) {
-      log.write('\n${record.stackTrace}');
-    }
-
-    return log.toString();
   }
 
   /// Sets the custom data with a specified `key` for Bugfender on this device.

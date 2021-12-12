@@ -16,4 +16,4 @@
 library logging_bugfender;
 
 export 'src/logging_bugfender.dart';
-export 'src/print_strategies.dart';
+export 'src/print_strategy.dart';
