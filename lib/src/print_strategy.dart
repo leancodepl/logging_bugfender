@@ -47,32 +47,3 @@ class PlainTextPrintStrategy extends PrintStrategy {
     return log.toString();
   }
 }
-
-/// Instructs [LoggingBugfenderListener] to print colored text.
-/// The color is based on the log level.
-class ColoredTextPrintStrategy extends PrintStrategy {
-  /// Creates a strategy that prints colored plain text.
-  const ColoredTextPrintStrategy();
-
-  @override
-  String print(LogRecord record) {
-    final log = StringBuffer()
-      ..writeAll(
-        <String>[
-          '[${record.level.name}]',
-          if (record.loggerName.isNotEmpty) '${record.loggerName}:',
-          record.message,
-        ],
-        ' ',
-      );
-
-    if (record.error != null) {
-      log.write('\n${record.error}');
-    }
-    if (record.stackTrace != null) {
-      log.write('\n${record.stackTrace}');
-    }
-
-    return log.toString();
-  }
-}

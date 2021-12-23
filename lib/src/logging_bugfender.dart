@@ -62,9 +62,6 @@ class LoggingBugfenderListener {
   final PrintStrategy consolePrintStrategy;
 
   /// Defines if and how logs should be created and sent to Bugfender.
-  ///
-  /// For this, [ColoredTextPrintStrategy] works the same as
-  /// [PlainTextPrintStrategy].
   final PrintStrategy bugfenderPrintStrategy;
 
   /// Starts listening to logs emitted by [logger].
