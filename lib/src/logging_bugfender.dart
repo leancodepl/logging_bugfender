@@ -58,7 +58,7 @@ class LoggingBugfenderListener {
     );
   }
 
-  /// Defines if and how logs should created and printed to the console.
+  /// Defines if and how logs should be created and printed to the console.
   final PrintStrategy consolePrintStrategy;
 
   /// Defines if and how logs should be created and sent to Bugfender.
