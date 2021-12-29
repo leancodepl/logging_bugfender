@@ -51,7 +51,7 @@ class LoggingBugfenderListener {
       apiUri: apiUri,
       baseUri: baseUri,
       maximumLocalStorageSize: maximumLocalStorageSize,
-      printToConsole: false, // we do logging ourselves
+      printToConsole: false, // we do console printing ourselves
       enableUIEventLogging: enableUIEventLogging,
       enableCrashReporting: enableCrashReporting,
       enableAndroidLogcatLogging: enableAndroidLogcatLogging,
