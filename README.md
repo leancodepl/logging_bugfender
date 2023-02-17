@@ -69,6 +69,6 @@ class FooBarCubit {
 
 [pub-badge]: https://img.shields.io/pub/v/logging_bugfender
 [pub-badge-link]: https://pub.dev/packages/logging_bugfender
-[build-badge]: https://img.shields.io/github/workflow/status/leancodepl/logging_bugfender/test
-[build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions?query=workflow%3A%22test%22
+[build-badge]: https://img.shields.io/github/actions/workflow/status/leancodepl/logging_bugfender/test.yml?branch=master
+[build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions/workflows/test.yml
 [logging]: https://pub.dev/packages/logging
