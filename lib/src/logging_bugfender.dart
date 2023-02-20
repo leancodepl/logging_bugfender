@@ -46,15 +46,17 @@ class LoggingBugfenderListener {
     bool enableCrashReporting = true,
     bool enableAndroidLogcatLogging = true,
   }) {
-    FlutterBugfender.init(
-      appKey,
-      apiUri: apiUri,
-      baseUri: baseUri,
-      maximumLocalStorageSize: maximumLocalStorageSize,
-      printToConsole: false, // we do console printing ourselves
-      enableUIEventLogging: enableUIEventLogging,
-      enableCrashReporting: enableCrashReporting,
-      enableAndroidLogcatLogging: enableAndroidLogcatLogging,
+    unawaited(
+      FlutterBugfender.init(
+        appKey,
+        apiUri: apiUri,
+        baseUri: baseUri,
+        maximumLocalStorageSize: maximumLocalStorageSize,
+        printToConsole: false, // we do console printing ourselves
+        enableUIEventLogging: enableUIEventLogging,
+        enableCrashReporting: enableCrashReporting,
+        enableAndroidLogcatLogging: enableAndroidLogcatLogging,
+      ),
     );
   }
 
@@ -76,13 +78,13 @@ class LoggingBugfenderListener {
       final bugfenderLog = bugfenderPrintStrategy.print(logRecord);
       if (bugfenderLog != null) {
         if (logRecord.level >= Level.SEVERE) {
-          FlutterBugfender.fatal(bugfenderLog);
+          unawaited(FlutterBugfender.fatal(bugfenderLog));
         } else if (logRecord.level >= Level.WARNING) {
-          FlutterBugfender.warn(bugfenderLog);
+          unawaited(FlutterBugfender.warn(bugfenderLog));
         } else if (logRecord.level >= Level.CONFIG) {
-          FlutterBugfender.info(bugfenderLog);
+          unawaited(FlutterBugfender.info(bugfenderLog));
         } else {
-          FlutterBugfender.trace(bugfenderLog);
+          unawaited(FlutterBugfender.trace(bugfenderLog));
         }
       }
     });
