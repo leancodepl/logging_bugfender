@@ -1,3 +1,7 @@
+# 3.1.0
+
+- Bump minimum Flutter version to 3.3.0.
+
 # 3.0.0
 
 - Package rework. Now it comes with an opinionated (but configurable) logger
