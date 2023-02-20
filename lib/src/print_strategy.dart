@@ -1,6 +1,5 @@
 import 'package:logging/logging.dart';
-
-import 'logging_bugfender.dart';
+import 'package:logging_bugfender/src/logging_bugfender.dart';
 
 /// Defines how [LoggingBugfenderListener] prints log messages.
 abstract class PrintStrategy {
