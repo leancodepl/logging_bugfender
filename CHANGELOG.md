@@ -1,3 +1,7 @@
+# 3.1.1
+
+- Bump flutter_bugfender version to 2.1.2.
+
 # 3.1.0
 
 - Bump minimum Flutter version to 3.3.0.
