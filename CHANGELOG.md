@@ -1,3 +1,8 @@
+# 4.0.0
+
+- Bump flutter_bugfender version to 3.0.0
+- Fix sdk constraint
+
 # 3.1.1
 
 - Bump flutter_bugfender version to 2.1.2.
