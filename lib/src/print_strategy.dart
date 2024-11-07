@@ -47,11 +47,16 @@ class PlainTextPrintStrategy extends PrintStrategy {
   }
 }
 
-/// Instructs [LoggingBugfenderListener] to print colored text.
-/// The color is based on the log level.
-/// The colored text works only if the output terminal supports ANSI escape
-/// sequences. In most cases you can check if ANSI escapes are supported, using
-/// `kIsWeb || io.stdout.supportsAnsiEscapes`.
+/// Instructs [LoggingBugfenderListener] to print color-coded text based
+/// on log levels. Color display depends on the terminal’s support for ANSI
+/// escape sequences, which theoretically can be verified using
+/// `io.stdout.supportsAnsiEscapes`. However, this check often fails to return
+/// `true` even when ANSI escapes are supported by the terminal.
+///
+/// For optimal results, test this print strategy in your chosen
+/// IDE and output device combination. Consider enabling this feature
+/// conditionally, such as through an environment variable.
+
 class ColoredTextPrintStrategy extends PlainTextPrintStrategy {
   /// Creates a strategy that prints colored plain text.
   const ColoredTextPrintStrategy();
