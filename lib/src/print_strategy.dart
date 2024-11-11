@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:logging/logging.dart';
 import 'package:logging_bugfender/src/logging_bugfender.dart';
 
@@ -8,6 +10,11 @@ abstract class PrintStrategy {
 
   /// Creates a log message.
   String? print(LogRecord record);
+
+  /// Creates a log message and prints it using the `log` function from
+  /// `dart:developer`.
+
+  void log(LogRecord record);
 }
 
 /// Instructs [LoggingBugfenderListener] to never print.
@@ -17,6 +24,9 @@ class NeverPrintStrategy extends PrintStrategy {
 
   @override
   String? print(LogRecord record) => null;
+
+  @override
+  void log(LogRecord record) {}
 }
 
 /// Instructs [LoggingBugfenderListener] to print plain text.
@@ -26,7 +36,7 @@ class PlainTextPrintStrategy extends PrintStrategy {
 
   @override
   String print(LogRecord record) {
-    final log = StringBuffer()
+    final logMessage = StringBuffer()
       ..writeAll(
         <String>[
           '[${record.level.name}]',
@@ -37,13 +47,29 @@ class PlainTextPrintStrategy extends PrintStrategy {
       );
 
     if (record.error != null) {
-      log.write('\n${record.error}');
+      logMessage.write('\n${record.error}');
     }
     if (record.stackTrace != null) {
-      log.write('\n${record.stackTrace}');
+      logMessage.write('\n${record.stackTrace}');
     }
 
-    return log.toString();
+    return logMessage.toString();
+  }
+
+  @override
+  void log(LogRecord record) {
+    final logMessage = '[${record.level.name}] ${record.message}';
+
+    dev.log(
+      logMessage,
+      name: record.loggerName,
+      error: record.error,
+      stackTrace: record.stackTrace,
+      level: record.level.value,
+      time: record.time,
+      sequenceNumber: record.sequenceNumber,
+      zone: record.zone,
+    );
   }
 }
 
@@ -80,14 +106,34 @@ class ColoredTextPrintStrategy extends PlainTextPrintStrategy {
 
   @override
   String print(LogRecord record) {
-    final log = super.print(record);
+    final logMessage = super.print(record);
 
-    final color = _levelColors[record.level];
+    return _encodeColor(logMessage, record.level);
+  }
+
+  @override
+  void log(LogRecord record) {
+    final logMessage = '[${record.level.name}] ${record.message}';
+
+    dev.log(
+      _encodeColor(logMessage.toString(), record.level),
+      name: record.loggerName,
+      error: record.error,
+      stackTrace: record.stackTrace,
+      level: record.level.value,
+      time: record.time,
+      sequenceNumber: record.sequenceNumber,
+      zone: record.zone,
+    );
+  }
+
+  String _encodeColor(String text, Level level) {
+    final color = _levelColors[level];
 
     if (color != null) {
-      return '${ansiEsc}38;5;${color}m$log$ansiDefault';
+      return '${ansiEsc}38;5;${color}m$text$ansiDefault';
     } else {
-      return log;
+      return text;
     }
   }
 }
