@@ -1,6 +1,7 @@
 # 5.0.0
 
 - Bump flutter_bugfender version to 4.0.0
+- Bump minimum Dart version to 3.3.0 and Flutter version to 3.19.0
 
 # 4.0.0
 
