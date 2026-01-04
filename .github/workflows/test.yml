@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.24.3', '3.3.10', '3.7.3']
+        version: ['3.38.5', '3.24.3', '3.3.10', '3.7.3']
 
     steps:
       - name: Checkout
