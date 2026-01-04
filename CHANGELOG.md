@@ -1,3 +1,7 @@
+# 5.0.0
+
+- Bump flutter_bugfender version to 4.0.0
+
 # 4.0.0
 
 - Bump flutter_bugfender version to 3.0.0
