@@ -18,6 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Required to set up the token for publishing packages.
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
         with:
