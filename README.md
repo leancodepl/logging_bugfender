@@ -34,6 +34,47 @@ void setupLogger(bool debugMode) {
 }
 ```
 
+### Using `ColoredTextPrintStrategy`
+
+To enable log level-based text coloring in console output, consider using
+[ColoredTextPrintStrategy]. Note that this strategy may not function
+correctly depending on the output terminal and target device.
+
+For optimal results, test this print strategy in your chosen IDE and
+output device combination. Consider enabling this feature conditionally,
+for example, using dart defines.
+
+1. Prepare code setup
+
+```dart
+// ...
+void setupLogger(bool debugMode) {
+  if (debugMode) {
+    // During debugging, you'll usually want to log everything
+    Logger.root.level = Level.ALL;
+
+    const useColoredText = bool.fromEnvironment("USE_COLORED_TEXT_LOGGING");
+
+    LoggingBugfenderListener(
+      config.bugfenderKey,
+      consolePrintStrategy: useColoredText
+          ? const ColoredTextPrintStrategy()
+          : const PlainTextPrintStrategy(),
+    ).listen(Logger.root);
+  } else {
+    // ...
+  }
+}
+```
+
+2. Pass the flag using `--dart-define`
+
+```
+flutter run --dart-define="USE_COLORED_TEXT_LOGGING=true"
+```
+
+Note: You can also use --dart-define-from-file which is introduced in Flutter 3.7.
+
 ### Custom data
 
 You can also add and remove custom data.
