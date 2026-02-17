@@ -1,5 +1,5 @@
 <a href="https://leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender" align="center">
-  <img alt="logging_bugfender" src="https://github.com/user-attachments/assets/291d18bd-3343-4009-8065-bedb8feaf0c5" />
+  <img alt="logging_bugfender" src="https://github.com/user-attachments/assets/b5614a70-bb70-4948-8d27-b4e44738ddad" />
 </a>
 
 # logging_bugfender
