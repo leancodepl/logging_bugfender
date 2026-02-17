@@ -1,3 +1,7 @@
+<a href="https://leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender" align="center">
+  <img alt="logging_bugfender" src="https://github.com/user-attachments/assets/b5614a70-bb70-4948-8d27-b4e44738ddad" />
+</a>
+
 # logging_bugfender
 
 [![logging_bugfender pub.dev badge][pub-badge]][pub-badge-link]
