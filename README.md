@@ -1,6 +1,8 @@
-<a href="https://leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender" align="center">
-  <img alt="logging_bugfender" src="https://github.com/user-attachments/assets/b5614a70-bb70-4948-8d27-b4e44738ddad" />
-</a>
+<div align="center">
+
+[![Banner][banner-img]][leancode-landing]
+
+</div>
 
 # logging_bugfender
 
@@ -71,8 +73,43 @@ class FooBarCubit {
 }
 ```
 
+---
+
+## 🛠️ Maintained by LeanCode
+<div align="center">
+
+  [<img src="https://leancodepublic.blob.core.windows.net/public/wide.png" alt="LeanCode Logo" height="100" />][leancode-landing]
+
+</div>
+
+This package is built with 💙 by **[LeanCode][leancode-landing]**.
+We are **top-tier experts** focused on Flutter Enterprise solutions.
+
+### Why LeanCode?
+
+- **Creators of [Patrol][patrol-landing]** – the next-gen testing framework for Flutter.
+
+- **Production-Ready** – We use this package in apps with millions of users.
+- **Full-Cycle Product Development** – We take your product from scratch to long-term maintenance.
+
+<div align="center">
+  <br />
+
+  **Need help with your Flutter project?**
+
+  [**👉 Hire our team**][leancode-estimate]
+  &nbsp;&nbsp;•&nbsp;&nbsp;
+  [Check our other packages][leancode-packages]
+
+</div>
+
 [pub-badge]: https://img.shields.io/pub/v/logging_bugfender
 [pub-badge-link]: https://pub.dev/packages/logging_bugfender
 [build-badge]: https://img.shields.io/github/actions/workflow/status/leancodepl/logging_bugfender/test.yml?branch=master
 [build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions/workflows/test.yml
 [logging]: https://pub.dev/packages/logging
+[banner-img]: https://raw.githubusercontent.com/leancodepl/logging_bugfender/refs/heads/master/docs/imgs/banner.png
+[leancode-landing]: https://leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender
+[leancode-estimate]: https://leancode.co/get-estimate?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender
+[leancode-packages]: https://pub.dev/packages?q=publisher%3Aleancode.co&sort=downloads
+[patrol-landing]: https://patrol.leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender
