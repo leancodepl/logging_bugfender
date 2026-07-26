@@ -40,6 +40,10 @@ jobs:
       - name: Download pub dependencies
         run: flutter pub get
 
+      - name: Download example pub dependencies
+        run: flutter pub get
+        working-directory: example
+
       - name: Run analyzer
         run: flutter analyze
 

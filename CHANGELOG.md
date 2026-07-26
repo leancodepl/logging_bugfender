@@ -1,3 +1,7 @@
+# 6.0.1
+
+- Add an example app.
+
 # 6.0.0
 
 - Bump flutter_bugfender version to 5.0.0

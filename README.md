@@ -11,6 +11,8 @@
 
 A library helping integrate Bugfender with the [logging] package.
 
+See the [example app][example] for a runnable version of the snippets below.
+
 ## Usage
 
 ### Setup
@@ -108,6 +110,7 @@ We are **top-tier experts** focused on Flutter Enterprise solutions.
 [build-badge]: https://img.shields.io/github/actions/workflow/status/leancodepl/logging_bugfender/test.yml?branch=master
 [build-badge-link]: https://github.com/leancodepl/logging_bugfender/actions/workflows/test.yml
 [logging]: https://pub.dev/packages/logging
+[example]: https://github.com/leancodepl/logging_bugfender/tree/master/example
 [banner-img]: https://raw.githubusercontent.com/leancodepl/logging_bugfender/refs/heads/master/docs/imgs/banner.png
 [leancode-landing]: https://leancode.co/?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender
 [leancode-estimate]: https://leancode.co/get-estimate?utm_source=github.com&utm_medium=referral&utm_campaign=logging-bugfender
