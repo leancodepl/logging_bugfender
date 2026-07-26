@@ -7,90 +7,75 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:logging_bugfender/logging_bugfender.dart';
 
-/// Your secret app key, taken from the Bugfender dashboard.
-///
-/// Run the example with your own key:
-/// `flutter run --dart-define=BUGFENDER_APP_KEY=<your-app-key>`.
-const bugfenderAppKey = String.fromEnvironment('BUGFENDER_APP_KEY');
-
-/// Flip this to `false` to see how the setup behaves on production.
-const debugMode = true;
-
 /// The key under which the signed in user is reported to Bugfender.
 const usernameKey = 'username';
 
-/// The listener has to outlive the logger it listens to, so it's kept in a
-/// top-level variable. In a real app it would usually live in your DI
-/// container.
-late final LoggingBugfenderListener loggingListener;
-
 void main() {
-  loggingListener = setupLogger(debugMode: debugMode);
+  // During debugging, you'll usually want to log everything. On production,
+  // `Level.INFO` and above is usually enough.
+  Logger.root.level = Level.ALL;
 
-  runApp(const ExampleApp());
-}
+  final loggingListener = LoggingBugfenderListener(
+    'my-very-secret-app-key',
+    // Logs are only sent to Bugfender by default – printing them to the
+    // console too is handy while debugging.
+    consolePrintStrategy: const PlainTextPrintStrategy(),
+  )..listen(Logger.root);
 
-/// Creates a [LoggingBugfenderListener] and attaches it to the root logger, so
-/// that every record logged anywhere in the app ends up in Bugfender.
-LoggingBugfenderListener setupLogger({required bool debugMode}) {
-  final LoggingBugfenderListener listener;
-
-  if (debugMode) {
-    // During debugging, you'll usually want to log everything and to also see
-    // the logs in the console.
-    Logger.root.level = Level.ALL;
-    listener = LoggingBugfenderListener(
-      bugfenderAppKey,
-      consolePrintStrategy: const PlainTextPrintStrategy(),
-    );
-  } else {
-    // On production, you probably want to log only INFO and above.
-    Logger.root.level = Level.INFO;
-    listener = LoggingBugfenderListener(bugfenderAppKey);
-  }
-
-  listener.listen(Logger.root);
-
-  return listener;
+  runApp(ExampleApp(loggingListener: loggingListener));
 }
 
 class ExampleApp extends StatelessWidget {
-  const ExampleApp({super.key});
+  const ExampleApp({super.key, required this.loggingListener});
+
+  final LoggingBugfenderListener loggingListener;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'logging_bugfender example',
-      home: ExamplePage(),
+      home: ExamplePage(loggingListener: loggingListener),
     );
   }
 }
 
 class ExamplePage extends StatefulWidget {
-  const ExamplePage({super.key});
+  const ExamplePage({super.key, required this.loggingListener});
+
+  final LoggingBugfenderListener loggingListener;
 
   @override
   State<ExamplePage> createState() => _ExamplePageState();
 }
 
 class _ExamplePageState extends State<ExamplePage> {
-  final _cubit = FooBarCubit();
+  /// Every class that logs should have its own [Logger] – its name is included
+  /// in the log message, so you always know where a record came from.
+  final _logger = Logger('ExamplePage');
 
   bool _signedIn = false;
 
   /// Custom data is attached to every log sent from this device, which makes
   /// it easy to tell whose session you're looking at in the Bugfender console.
   Future<void> _toggleSignIn() async {
-    if (_signedIn) {
-      // After the user signs out.
-      await loggingListener.removeCustomData(usernameKey);
-    } else {
-      // After the user signs in.
-      await loggingListener.setCustomData(usernameKey, 'jane.doe');
+    final signedIn = _signedIn;
+
+    try {
+      if (signedIn) {
+        await widget.loggingListener.removeCustomData(usernameKey);
+      } else {
+        await widget.loggingListener.setCustomData(usernameKey, 'jane.doe');
+      }
+    } catch (err, st) {
+      // Both the error and the stack trace are sent to Bugfender.
+      _logger.severe('Failed updating the custom data', err, st);
+      return;
     }
 
+    _logger.info(signedIn ? 'Signed out' : 'Signed in');
+
     if (mounted) {
-      setState(() => _signedIn = !_signedIn);
+      setState(() => _signedIn = !signedIn);
     }
   }
 
@@ -103,12 +88,12 @@ class _ExamplePageState extends State<ExamplePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FilledButton(
-              onPressed: _cubit.doSomething,
-              child: const Text('Do something'),
+              onPressed: () => _logger.fine('The details button was tapped'),
+              child: const Text('Log at FINE'),
             ),
             FilledButton(
-              onPressed: _cubit.doSomethingFailing,
-              child: const Text('Do something that fails'),
+              onPressed: () => _logger.warning('The cache is almost full'),
+              child: const Text('Log at WARNING'),
             ),
             const SizedBox(height: 16),
             FilledButton(
@@ -119,28 +104,5 @@ class _ExamplePageState extends State<ExamplePage> {
         ),
       ),
     );
-  }
-}
-
-/// A stand-in for a piece of business logic that reports what it's doing.
-///
-/// Every class that logs should have its own [Logger] – its name is included
-/// in the log message, so you always know where a record came from.
-class FooBarCubit {
-  final _logger = Logger('FooBarCubit');
-
-  void doSomething() {
-    _logger.info('Successfully did something');
-  }
-
-  void doSomethingFailing() {
-    _logger.fine('About to do something else');
-
-    try {
-      throw const FormatException('Malformed response');
-    } catch (err, st) {
-      // Both the error and the stack trace are sent to Bugfender.
-      _logger.severe('Failed doing something else', err, st);
-    }
   }
 }
