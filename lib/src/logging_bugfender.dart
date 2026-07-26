@@ -42,6 +42,7 @@ class LoggingBugfenderListener {
     int? maximumLocalStorageSize,
     this.consolePrintStrategy = const NeverPrintStrategy(),
     this.bugfenderPrintStrategy = const PlainTextPrintStrategy(),
+    this.consoleLoggingMethod = ConsoleLoggingMethod.print,
     bool enableUIEventLogging = true,
     bool enableCrashReporting = true,
     bool enableAndroidLogcatLogging = true,
@@ -63,16 +64,26 @@ class LoggingBugfenderListener {
   /// Defines if and how logs should be created and printed to the console.
   final PrintStrategy consolePrintStrategy;
 
+  /// Defines the preferred method for printing logs to the console. By using
+  /// the `log` function, additional information can be included in the console
+  /// output. Depending on the output console type, this approach may also help
+  /// display colored text correctly when using [ColoredTextPrintStrategy].
+  final ConsoleLoggingMethod consoleLoggingMethod;
+
   /// Defines if and how logs should be created and sent to Bugfender.
   final PrintStrategy bugfenderPrintStrategy;
 
   /// Starts listening to logs emitted by [logger].
   StreamSubscription<LogRecord> listen(Logger logger) {
     return logger.onRecord.listen((logRecord) {
-      final consoleLog = consolePrintStrategy.print(logRecord);
-      if (consoleLog != null) {
-        // ignore: avoid_print
-        print(consoleLog);
+      if (consoleLoggingMethod == ConsoleLoggingMethod.log) {
+        consolePrintStrategy.log(logRecord);
+      } else {
+        final consoleLog = consolePrintStrategy.print(logRecord);
+        if (consoleLog != null) {
+          // ignore: avoid_print
+          print(consoleLog);
+        }
       }
 
       final bugfenderLog = bugfenderPrintStrategy.print(logRecord);
@@ -108,4 +119,13 @@ class LoggingBugfenderListener {
   /// Removes the custom data with a specified `key`.
   Future<void> removeCustomData(String key) =>
       FlutterBugfender.removeDeviceKey(key);
+}
+
+/// Defines prefered method of printing the logs to the console
+enum ConsoleLoggingMethod {
+  /// Logs will be printed using the `print` function
+  print,
+
+  /// Logs will be printed using the `log` function from `dart:developer`
+  log,
 }
